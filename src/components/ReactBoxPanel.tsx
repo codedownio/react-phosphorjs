@@ -1,51 +1,57 @@
 
 import * as React from "react";
 
-import {SplitPanel} from "@phosphor/widgets/lib/splitpanel";
+import {BoxPanel} from "@phosphor/widgets/lib/boxpanel";
 import {Widget} from "@phosphor/widgets/lib/widget";
 
 import {IWidgetParent} from "./Common";
 
-import "@phosphor/widgets/style/splitpanel.css";
-
-interface ReactSplitPanelProps {
+interface ReactBoxPanelProps {
+  parent?: IWidgetParent;
   withParent: (parent: IWidgetParent) => JSX.Element[] | JSX.Element;
+
   className?: string;
   style?: React.CSSProperties;
-
-  sizes?: number[];
 }
 
-export default class ReactSplitPanel extends React.Component<ReactSplitPanelProps, {}> {
+export default class ReactBoxPanel extends React.Component<ReactBoxPanelProps, {}> {
 
   private elem: HTMLElement;
 
-  private splitPanel: SplitPanel;
+  private boxPanel: BoxPanel;
 
   constructor(props) {
     super(props);
 
-    this.splitPanel = new SplitPanel();
-
-    this.splitPanel.node.style.position = "absolute";
-    this.splitPanel.node.style.left = "0px";
-    this.splitPanel.node.style.right = "0px";
-    this.splitPanel.node.style.top = "0px";
-    this.splitPanel.node.style.bottom = "0px";
+    this.boxPanel = new BoxPanel();
   }
 
   componentDidMount() {
-    Widget.attach(this.splitPanel, this.elem);
-    if (this.props.sizes) this.splitPanel.setRelativeSizes(this.props.sizes);
+    this.attach();
   }
 
   componentDidUpdate() {
-    Widget.attach(this.splitPanel, this.elem);
-    if (this.props.sizes) this.splitPanel.setRelativeSizes(this.props.sizes);
+    this.attach();
+  }
+
+  attach() {
+    // If we have a parent, attach to it and render using portals
+    // Otherwise, attach to our own React DOM node
+    if (this.props.parent) {
+      this.props.parent.receiveChild(this.boxPanel);
+    } else {
+      this.boxPanel.node.style.position = "absolute";
+      this.boxPanel.node.style.left = "0px";
+      this.boxPanel.node.style.right = "0px";
+      this.boxPanel.node.style.top = "0px";
+      this.boxPanel.node.style.bottom = "0px";
+
+      Widget.attach(this.boxPanel, this.elem);
+    }
   }
 
   receiveChild(child: Widget) {
-    this.splitPanel.addWidget(child);
+    this.boxPanel.addWidget(child);
   }
 
   render() {

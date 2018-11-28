@@ -6,29 +6,29 @@ import "./../assets/scss/App.scss";
 
 const reactLogo = require("./../assets/img/react_logo.svg");
 
+import ReactBoxPanel from "./ReactBoxPanel";
 import ReactSplitPanel from "./ReactSplitPanel";
 import ReactWidget from "./ReactWidget";
+
+const absoluteFill: React.CSSProperties = {
+  position: "absolute",
+  left: "0px",
+  right: "0px",
+  top: "0px",
+  bottom: "0px",
+};
 
 export default class App extends React.Component<{}, undefined> {
 
   render() {
-    let absoluteFill: React.CSSProperties = {
-      position: "absolute",
-      left: "0px",
-      right: "0px",
-      top: "0px",
-      bottom: "0px",
-    };
-
     return (
       <div className="app">
           <h1>Hello World!</h1>
           <p>Foo to the barzzzzzzzzzzzz</p>
 
-          <ReactSplitPanel withParent={(parent) => {
-              return [
-                <ReactWidget key="blue"
-                             parent={parent}>
+          <ReactSplitPanel withParent={(parent) =>
+            <div>
+                <ReactWidget parent={parent}>
                     <div className=""
                              style={{
                                backgroundColor: "red",
@@ -36,18 +36,33 @@ export default class App extends React.Component<{}, undefined> {
                              }}>
                         <p>Hi there</p>
                     </div>
-                </ReactWidget>,
+                </ReactWidget>
 
-                <ReactWidget key="red"
-                             parent={parent}>
+                <ReactWidget parent={parent}>
                     <h1>Other thingggg</h1>
                 </ReactWidget>
-              ];
-          }} style={{
-            width: "500px",
-            height: "500px",
-            border: "solid 1px black"
-          }} />
+
+                <ReactBoxPanel parent={parent}
+                               withParent={(boxParent) =>
+                                 <div>
+                                     <ReactWidget parent={boxParent}>
+                                         <h1>First box panel thing</h1>
+                                     </ReactWidget>
+
+                                     <ReactWidget parent={boxParent}>
+                                         <h1>Second box panel thing</h1>
+                                     </ReactWidget>
+                                 </div>
+
+                                          } />
+            </div>}
+                           style={{
+                             width: "500px",
+                             height: "500px",
+                             border: "solid 1px black"
+                           }}
+
+                           sizes={[0.2, 0.4, 0.4]} />
       </div>
     );
   }
