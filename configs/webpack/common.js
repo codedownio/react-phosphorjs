@@ -2,6 +2,7 @@
 const {resolve} = require('path');
 const {CheckerPlugin} = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const keysTransformer = require('ts-transformer-keys/transformer').default;
 
 module.exports = {
   resolve: {
@@ -17,7 +18,13 @@ module.exports = {
       },
       {
         test: /\.tsx?$/,
-        use: ['babel-loader', 'awesome-typescript-loader'],
+        use: ['babel-loader', { loader: 'awesome-typescript-loader', options: {
+          getCustomTransformers: program => ({
+            before: [
+              keysTransformer(program)
+            ]
+          })
+        }}],
       },
       {
         test: /\.css$/,

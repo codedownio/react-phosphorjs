@@ -53,12 +53,14 @@
     "image-webpack-loader": "^4.5.0",
     "jest": "^23.6.0",
     "node-sass": "^4.10.0",
-    "react": "^16.6.3",
+    "prop-types": "^15.6.2",
+    "react": ">=16.6.3",
     "react-addons-test-utils": "^15.6.2",
-    "react-dom": "^16.6.3",
+    "react-dom": ">=16.6.3",
     "react-hot-loader": "^4.3.12",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
+    "ts-transformer-keys": "^0.3.3",
     "tslint": "^5.11.0",
     "typescript": "^3.1.6",
     "uglifyjs-webpack-plugin": "^2.0.1",
@@ -68,5 +70,7 @@
     "webpack-dev-server": "^3.1.10",
     "webpack-merge": "^4.1.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "prop-types": "^15.6.2"
+  }
 }
