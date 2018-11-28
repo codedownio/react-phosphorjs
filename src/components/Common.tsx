@@ -9,10 +9,6 @@ export interface IWidgetParent {
   receiveChild: (child: Widget) => void;
 }
 
-export interface IWidgetProps {
-
-}
-
 export const absoluteFill: React.CSSProperties = {
   position: "absolute",
   left: "0px",

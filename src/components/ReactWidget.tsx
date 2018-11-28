@@ -5,9 +5,15 @@ import {createPortal} from "react-dom";
 
 import {Widget} from "@phosphor/widgets/lib/widget";
 
+import {Title} from "@phosphor/widgets/lib/title";
+
 require("@phosphor/widgets/style/widget.css");
 
-import {IWidgetProps, WidgetParentContext, IWidgetParent} from "./Common";
+import {WidgetParentContext, IWidgetParent} from "./Common";
+
+export interface IWidgetProps {
+  title?: Partial<Title.IOptions<Widget>>;
+}
 
 export default class ReactWidget extends React.PureComponent<IWidgetProps, {}> {
   private widget: Widget;
@@ -23,6 +29,8 @@ export default class ReactWidget extends React.PureComponent<IWidgetProps, {}> {
   constructor(props) {
     super(props);
     this.widget = new Widget();
+
+    ReactWidget.setTitleKeys(this.widget, {}, props);
   }
 
   componentDidMount() {
@@ -32,8 +40,18 @@ export default class ReactWidget extends React.PureComponent<IWidgetProps, {}> {
     parent.receiveChild(this.widget);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps: IWidgetProps) {
+    ReactWidget.setTitleKeys(this.widget, prevProps, this.props);
+  }
 
+  static setTitleKeys(widget: Widget, prevProps: IWidgetProps, props: IWidgetProps) {
+    let titleKeys: (keyof Title.IOptions<Widget>)[] = ["caption", "className", "closable", "dataset", "icon", "iconClass", "iconLabel", "label", "mnemonic"];
+
+    for (let k of titleKeys) {
+      if ((prevProps.title || {})[k as any] !== (props.title || {})[k as any]) {
+        widget.title[k as any] = props.title[k as any];
+      }
+    }
   }
 
   render() {
